@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile
 import uvicorn
 
 from YOLO import predict_YOLO
@@ -10,7 +10,7 @@ load_dotenv()
 if not os.path.exists("predictions"):
     os.makedirs("predictions")
 
-app = FastAPI(tittle="YOLO API")
+app = FastAPI(title="YOLO API")
 
 
 @app.get("/")
@@ -19,19 +19,27 @@ def read_root():
 
 
 @app.post("/predict/")
-def predict(photo_path, file_id):
-    modelYOLO = predict_YOLO(photo_path, file_id)
+async def predict(file: UploadFile):
+    try:
+        # Guarda el archivo cargado en el servidor
+        file_id = file.filename
+        with open(f"uploads/{file_id}", "wb") as f:
+            f.write(file.file.read())
 
-    if not modelYOLO:
-        # the exception is raised, not returned - you will get a validation error otherwise
+        # Realiza la predicción usando tu función predict_YOLO
+        photo_path = f"uploads/{file_id}"
+        modelYOLO = predict_YOLO(photo_path, file_id)
 
-        raise HTTPException(status_code=404, detail="Image could not be downloaded")
+        if not modelYOLO:
+            raise HTTPException(status_code=404, detail="No se pudo procesar la imagen")
 
-    return {
-        "status_code": 200,
-        "ingredient": modelYOLO["ingredient"],
-        "probability": modelYOLO["probability"],
-    }
+        return {
+            "status_code": 200,
+            "ingredient": modelYOLO["ingredient"],
+            "probability": modelYOLO["probability"],
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
