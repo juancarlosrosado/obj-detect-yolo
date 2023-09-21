@@ -8,6 +8,10 @@ from ultralytics import YOLO
 load_dotenv()
 
 
+if not os.path.exists("predictions"):
+    os.makedirs("predictions")
+
+
 def predict_YOLO(photo_path, file_id):
     """
     Realiza una predicción sobre una imagen
