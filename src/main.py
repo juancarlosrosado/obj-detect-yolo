@@ -1,17 +1,11 @@
-import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, UploadFile
 import uvicorn
-import uuid
 import json
 
 from YOLO import predict_YOLO
 
 load_dotenv()
-
-
-if not os.path.exists("uploads"):
-    os.makedirs("uploads")
 
 app = FastAPI(title="YOLO API")
 
@@ -22,13 +16,12 @@ def read_root():
 
 
 @app.post("/predict/")
-async def predict(file: UploadFile):
+async def predict(file: UploadFile, file_id: str = None):
     try:
-        file_id = str(uuid.uuid4())
-        with open(f"uploads/{file_id}.jpg", "wb") as f:
+        with open(f"telegram_photos/{file_id}.jpg", "wb") as f:
             f.write(file.file.read())
 
-        photo_path = f"uploads/{file_id}.jpg"
+        photo_path = f"telegram_photos/{file_id}.jpg"
         modelYOLO = predict_YOLO(photo_path, file_id)
 
         with open(f"predictions/{file_id}/{file_id}.json") as f:
