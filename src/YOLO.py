@@ -27,6 +27,9 @@ def predict_YOLO(photo_path, file_id):
         }
     """
     try:
+        if os.getenv("WEIGHTS_PATH") is None:
+            raise Exception("WEIGHTS_PATH not found")
+
         WEIGHTS_PATH = os.getenv("WEIGHTS_PATH")
 
         source = cv2.imread(photo_path)

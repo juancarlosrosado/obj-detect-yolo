@@ -45,15 +45,10 @@ COPY runs/ /app/runs/
 
 # Concedemos permisos de ejecución al archivo main.py
 RUN chmod +x /app/main.py
-# RUN chmod -R 777 /app/telegram_photos
-# RUN chown -R 10001:10001 /app/telegram_photos
-# RUN chmod -R 777 /app/predictions
-# RUN chown -R 10001:10001 /app/predictions
 
 # Cambiamos al usuario no privilegiado para ejecutar la aplicación
 USER appuser
 
 # Ejecutamos la aplicación
 
-CMD ["uvicorn", "main:app", "--host=0.0.0.0", "--port=80"]
-# ENTRYPOINT ["uvicorn", "python", "/app/main.py", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
