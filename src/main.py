@@ -25,10 +25,10 @@ def read_root():
 async def predict(file: UploadFile):
     try:
         file_id = str(uuid.uuid4())
-        with open(f"uploads/{file_id}", "wb") as f:
+        with open(f"uploads/{file_id}.jpg", "wb") as f:
             f.write(file.file.read())
 
-        photo_path = f"uploads/{file_id}"
+        photo_path = f"uploads/{file_id}.jpg"
         modelYOLO = predict_YOLO(photo_path, file_id)
 
         with open(f"predictions/{file_id}/{file_id}.json") as f:
@@ -44,4 +44,4 @@ async def predict(file: UploadFile):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
