@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException, UploadFile
 import uvicorn
 import json
 
-from YOLO import predict_YOLO
+from src.YOLO import predict_YOLO
 
 load_dotenv()
 
