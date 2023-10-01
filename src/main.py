@@ -1,13 +1,24 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, UploadFile
+from pydantic import BaseModel
 import uvicorn
 import json
+import os
 
+
+# from YOLO import predict_YOLO
 from src.YOLO import predict_YOLO
 
 load_dotenv()
 
 app = FastAPI(title="YOLO API")
+
+if not os.path.exists("uploads"):
+    os.makedirs("uploads")
+
+
+class Data(BaseModel):
+    file_id: str
 
 
 @app.get("/")
@@ -16,12 +27,12 @@ def read_root():
 
 
 @app.post("/predict/")
-async def predict(file: UploadFile, file_id: str = None):
+async def predict(file: UploadFile, file_id: Data = "123abc"):
     try:
-        with open(f"telegram_photos/{file_id}.jpg", "wb") as f:
+        with open(f"uploads/{file_id}.jpg", "wb") as f:
             f.write(file.file.read())
 
-        photo_path = f"telegram_photos/{file_id}.jpg"
+        photo_path = f"uploads/{file_id}.jpg"
         modelYOLO = predict_YOLO(photo_path, file_id)
 
         with open(f"predictions/{file_id}/{file_id}.json") as f:
