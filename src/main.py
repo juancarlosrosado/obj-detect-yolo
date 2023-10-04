@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, UploadFile
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException, UploadFile, Form
 import uvicorn
 import json
 import os
@@ -17,17 +16,13 @@ if not os.path.exists("uploads"):
     os.makedirs("uploads")
 
 
-class Data(BaseModel):
-    file_id: str
-
-
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
 
 @app.post("/predict/")
-async def predict(file: UploadFile, file_id: Data = "123abc"):
+async def predict(file: UploadFile, file_id: str = Form(...)):
     try:
         with open(f"uploads/{file_id}.jpg", "wb") as f:
             f.write(file.file.read())
