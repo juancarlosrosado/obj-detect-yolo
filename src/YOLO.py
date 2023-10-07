@@ -4,6 +4,7 @@ import datetime
 import json
 import cv2
 from ultralytics import YOLO
+import base64
 
 load_dotenv()
 
@@ -44,6 +45,13 @@ def predict_YOLO(photo_path, file_id):
             exist_ok=True,
         )
 
+        imagen_path = f"predictions/{file_id}/image0.jpg"
+
+        with open(imagen_path, "rb") as file:
+            imagen_bytes = file.read()
+
+        imagen_base64 = base64.b64encode(imagen_bytes).decode("utf-8")
+
         for result in results:
             detection_count = result.boxes.shape[0]
 
@@ -58,6 +66,7 @@ def predict_YOLO(photo_path, file_id):
                     "datetime": datetime_cet,
                     "ingredient": name,
                     "probability": round(confidence, 4),
+                    "image_bytes": imagen_base64,
                 }
                 my_dict.append(obj)
 
