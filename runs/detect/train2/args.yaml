@@ -1,8 +1,8 @@
 task: detect
 mode: train
 model: yolov8s.pt
-data: /content/IngredientDetect-14/data.yaml
-epochs: 2
+data: /content/IngredientDetect-17/data.yaml
+epochs: 20
 patience: 50
 batch: 16
 imgsz: 800
@@ -12,7 +12,7 @@ cache: false
 device: null
 workers: 8
 project: null
-name: null
+name: train
 exist_ok: false
 pretrained: true
 optimizer: auto
@@ -49,6 +49,7 @@ save_crop: false
 show_labels: true
 show_conf: true
 vid_stride: 1
+stream_buffer: false
 line_width: null
 visualize: false
 augment: false
@@ -94,4 +95,4 @@ mixup: 0.0
 copy_paste: 0.0
 cfg: null
 tracker: botsort.yaml
-save_dir: runs/detect/train2
+save_dir: runs/detect/train
