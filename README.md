@@ -25,7 +25,7 @@ Este proyecto utiliza varias tecnologías para ofrecer sus funciones, incluyendo
 
 - **Detección de objetos en imágenes**: se utiliza el modelo YOLOv8 pre-entrenado para identificar objetos en las imágenes.
 
-- **API**: utiliza el framework FastAPI con el objetivo de conectar el modelo YOLOv8 con el Chatbot de Telegram alojado en otro repositorio: [enlace al repositorio de Telegram](https://github.com/juankiross/obj-detect-telegram/tree/main).
+- **API**: utiliza el framework FastAPI con el objetivo de conectar el modelo YOLOv8 con el Chatbot de Telegram alojado en otro repositorio: [enlace al repositorio de Telegram](https://github.com/juancarlosrosado/obj-detect-telegram/tree/main).
 
 ## Variables de entorno
 
